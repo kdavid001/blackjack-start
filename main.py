@@ -35,37 +35,110 @@
 #11 is the Ace.
 #cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
 import random
-cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10]
-user_cards = random.sample(cards,2)
-computer_cards = random.sample(cards,1)
-print(f"Your cards: {user_cards}")
-print(f"computer's first card: {computer_cards}")
-computer_cards.append(random.choice(cards))
-print(f"computer's cards: {computer_cards}")
-#Hint 5: Deal the user and computer 2 cards each using deal_card() and append().
-
-#user_cards = []
-#computer_cards = []
-
-#Hint 6: Create a function called calculate_score() that takes a List of cards as input
-def calculated_score():
-  user_sum = sum(user_cards)
-  computer_sum = sum(computer_cards)
-  blackjack = 0
-   
-  for n in range(len(user_cards)) or range(len(computer_cards)):
-    if user_cards[n] == 11 and user_cards[n] == 10:
-      user_sum = 0
-    elif computer_cards[n] == 11 and computer_cards[n]== 10:
+from art import logo
+from replit import clear
+def start_game():
+  cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10]
+  
+  def deal_card():
+    random_card = random.choice(cards)
+    return random_card
+    
+    
+    
+  
+  
+  print(logo)
+  user_cards = random.sample(cards,2)
+  computer_cards = random.sample(cards,1)
+  print(f"Your cards: {user_cards}")
+  print(f"your score {sum(user_cards)}")
+  print(f"computer's first card: {computer_cards}")
+  computer_cards.append(random.choice(cards))
+  
+  #Hint 5: Deal the user and computer 2 cards each using deal_card() and append().
+  
+  #user_cards = []
+  #computer_cards = []
+  
+  #Hint 6: Create a function called calculate_score() that takes a List of cards as input
+  def calculated_score():
+    user_sum = sum(user_cards)
+    computer_sum = sum(computer_cards)
+    
+    if user_cards[0] == 11 and user_cards[1] == 10:
+      user_sum = 0 
+    if computer_cards[0] == 11 and computer_cards[1]== 10:
       computer_sum = 0
-   
-      
-    if user_cards[n] == 11 and user_sum > 21:
-      user_cards[n] = 1
-  print(user_sum)
-  print(computer_sum)
-      
-calculated_score()
+     
+    for n in range(len(user_cards)) or range(len(computer_cards)):
+      if user_cards[n] == 11 and user_sum > 21:
+        user_cards[n] = 1
+        user_sum = sum(user_cards)
+      if computer_cards[n] == 11 and computer_sum > 21:
+        computer_cards[n] = 1
+        computer_sum = sum(computer_cards)
+  
+    return user_sum,computer_sum
+    
+        
+  user_sum, computer_sum = calculated_score()
+  
+  if (computer_sum or user_sum) == 0:
+    game_end = True
+    print("Game has ended")
+  if (computer_sum or user_sum) > 21:
+    game_end = True
+    print("Game has ended")
+  else:
+    game_end = False
+  while game_end == False:
+    
+    draw_card = input("Do you want to draw another card, type 'y' for yes and 'n' for no ").lower()
+    if draw_card == 'y':
+      user_cards.append(deal_card())
+      print(f"Your cards: {user_cards}")
+      user_sum = sum(user_cards)
+      print(user_sum)
+      if user_sum > 21:
+        game_end = True
+    if draw_card == 'n':
+      game_end = True
+  
+  while computer_sum < 17:
+    computer_cards.append(deal_card())
+    computer_sum = sum(computer_cards)
+    print(f"computer's cards: {computer_cards}")
+    
+  
+  def compare(user_sum,computer_sum):
+    if user_sum == computer_sum:
+      print("it's a draw")
+    if user_sum == 0:
+      print("blackjack, You win!")
+    elif computer_sum == 0:
+      print("blackjack, You lose!")
+    if user_sum > 21:
+      print("You lose!")
+    elif computer_sum > 21:
+      print("you win")
+    if user_sum > 21 and computer_sum > 21:
+      if user_sum > computer_sum:
+        print("you win!")
+      elif computer_sum > user_sum:
+        print("You lose!")
+  
+     
+  print(f"your score {sum(user_cards)}")     
+  print(f"computer score: {computer_sum}")
+  compare(user_sum,computer_sum)
+
+
+start_game()
+restart = input("Do you want to restart the game? type 'y' for yes and 'n' for no")
+if restart == 'y':
+    clear()
+    start_game()
 
 #and returns the score. 
 #Look up the sum() function to help you do this.
